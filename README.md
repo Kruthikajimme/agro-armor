@@ -264,3 +264,4 @@ The project includes an Infrastructure-as-Code Blueprint (`render.yaml`) that de
 ## 📄 License & Ownership
 Copyright © 2026 Kruthika. All rights reserved.
 Developed for AgroArmor / AgroArmour Livestock & Poultry Management.
+
