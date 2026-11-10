@@ -64,7 +64,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମାର୍କେଟପ୍ଲେସ ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['marketplace', 'open marketplace', 'market', 'bazaar', 'shop', 'store', 'buy vaccine', 'buy feed', 'supplies', 'products', 'go to market'],
+      en: ['marketplace', 'open marketplace', 'take me to marketplace', 'go to marketplace', 'market', 'bazaar', 'shop', 'store', 'buy vaccine', 'buy feed', 'supplies', 'products', 'go to market'],
       kn: ['ಮಾರ್ಕೆಟ್ಪ್ಲೇಸ್', 'ಮಾರ್ಕೆಟ್', 'ಮಾರುಕಟ್ಟೆ', 'ಅಂಗಡಿ', 'ಖರೀದಿ', 'ಮಾರ್ಕೆಟ್ಪ್ಲೇಸ್ ತೆರೆಯಿರಿ', 'ಮಾರುಕಟ್ಟೆಗೆ ಹೋಗಿ', 'ಮಾರ್ಕೆಟ್ ತೆರೆಯಿರಿ', 'ಔಷಧಿ ಖರೀದಿ', 'marketplace kholo', 'market ge hogi', 'marketplace ge hogi'],
       hi: ['मार्केटप्लेस', 'बाजार', 'दुकान', 'मार्केट', 'सामान', 'मार्केटप्लेस खोलो', 'बाजार जाओ', 'दवा खरीदो', 'दुकान खोलो', 'मार्केट जाओ', 'marketplace kholo', 'bazar jao'],
       te: ['మార్కెట్ప్లేస్', 'మార్కెట్', 'దుకాణం', 'షాప్', 'మార్కెట్ప్లేస్ తెరవండి', 'మార్కెట్ కు వెళ్లు', 'సరుకులు', 'marketplace ki vellu', 'market open chey'],
@@ -107,7 +107,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ପଶୁ ଚିକିତ୍ସା ସେବା ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['veterinary', 'vet', 'doctor', 'open doctor page', 'doctors', 'clinic', 'hospital', 'medical', 'consult doctor', 'vet clinic', 'find doctor', 'vet doctor', 'animal doctor', 'open health', 'animal health', 'health', 'livestock health', 'health page'],
+      en: ['veterinary', 'vet', 'open veterinary', 'go to veterinary', 'doctor', 'open doctor page', 'doctors', 'clinic', 'hospital', 'medical', 'consult doctor', 'vet clinic', 'find doctor', 'vet doctor', 'animal doctor', 'go to health', 'open health', 'animal health', 'health', 'livestock health', 'health page'],
       kn: ['ಪಶು ವೈದ್ಯರು', 'ವೈದ್ಯರು', 'ಡಾಕ್ಟರ್', 'ವೆಟರ್ನರಿ', 'ಆಸ್ಪತ್ರೆ', 'ಕ್ಲಿನಿಕ್', 'ವೈದ್ಯರ ಪುಟ', 'ಡಾಕ್ಟರ್ ಪುಟ ತೆರೆಯಿರಿ', 'ವೈದ್ಯರ ಬಳಿ ಹೋಗಿ', 'ಆರೋಗ್ಯ ಪುಟ', 'doctor ge hogi', 'vet doctor nodi'],
       hi: ['पशु चिकित्सक', 'डॉक्टर', 'वेटनरी', 'अस्पताल', 'क्लिनिक', 'डॉक्टर पेज', 'डॉक्टर के पास जाओ', 'डॉक्टर पेज खोलो', 'इलाज', 'पशु अस्पताल', 'पशु स्वास्थ्य', 'स्वास्थ्य', 'doctor ke paas jao', 'vet kholo'],
       te: ['పశు వైద్యులు', 'డాక్టర్', 'వెటర్నరీ', 'వైద్యుడు', 'ఆసుపత్రి', 'క్లినిక్', 'డాక్టర్ పేజీ', 'డాక్టర్ పేజీ తెరవండి', 'వైద్యుని సంప్రదించండి', 'పశువుల ఆరోగ్యం', 'doctor daggara ki vellu'],
@@ -193,9 +193,9 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ଜିପିଏସ ଟ୍ରାକିଂ ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['track my animal', 'gps', 'gps tracking', 'tracking', 'track animal', 'livestock tracking', 'find animal', 'animal location', 'farm gps', 'map', 'track cattle', 'locate animal'],
-      kn: ['ಜಿಪಿಎಸ್', 'ಜಿಪಿಎಸ್ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಜಾನುವಾರು ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಹುಡುಕಿ', 'ಸ್ಥಳ', 'ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಜಾನುವಾರು ಹುಡುಕಿ'],
-      hi: ['जीपीएस', 'जीपीएस ट्रैकिंग', 'पशु ट्रैकिंग', 'जानवर ट्रैक करो', 'पशु ढूंढो', 'लोकेशन', 'पशु का पता लगाओ', 'ट्रैकिंग', 'animal track karo', 'gps kholo'],
+      en: ['track my animal', 'show my livestock', 'my livestock', 'livestock', 'show livestock', 'gps', 'gps tracking', 'tracking', 'track animal', 'livestock tracking', 'find animal', 'animal location', 'farm gps', 'map', 'track cattle', 'locate animal'],
+      kn: ['ಜಿಪಿಎಸ್', 'ಜಿಪಿಎಸ್ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಜಾನುವಾರು ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಹುಡುಕಿ', 'ಸ್ಥಳ', 'ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಜಾನುವಾರು ಹುಡುಕಿ', 'ನನ್ನ ಜಾನುವಾರು', 'ಜಾನುವಾರು', 'ಜಾನುವಾರು ತೋರಿಸಿ'],
+      hi: ['जीपीएस', 'जीपीएस ट्रैकिंग', 'पशु ट्रैकिंग', 'जानवर ट्रैक करो', 'पशु ढूंढो', 'लोकेशन', 'पशु का पता लगाओ', 'ट्रैकिंग', 'animal track karo', 'gps kholo', 'मेरे पशु', 'पशु दिखाओ', 'जानवर दिखाओ', 'मेरे जानवर'],
       te: ['జీపీఎస్', 'జీపీఎస్ ట్రాకింగ్', 'పశువుల ట్రాకింగ్', 'పశువును ట్రాక్ చేయండి', 'నా జంతువును ట్రాక్ చేయండి', 'స్థానం', 'ట్రాకింగ్'],
       ta: ['ஜிபிஎஸ்', 'ஜிபிஎஸ் கண்காணிப்பு', 'விலங்கு கண்காணிப்பு', 'கால்நடை கண்காணிப்பு', 'கால்நடைகளை கண்காணிக்கவும்', 'இடம்'],
       ml: ['ജിപിഎസ്', 'ജിപിഎസ് ട്രാക്കിംഗ്', 'മൃഗങ്ങളെ ട്രാക്ക് ചെയ്യുക', 'ലൊക്കേഷൻ'],
@@ -236,7 +236,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ସ୍ୱଚ୍ଛତା ପରୀକ୍ଷା ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['hygiene', 'hygiene test', 'health test', 'cleanliness', 'farm health', 'sanitation', 'health score', 'hygiene check', 'biosecurity', 'farm check'],
+      en: ['hygiene', 'go to hygiene', 'open hygiene', 'hygiene test', 'health test', 'cleanliness', 'farm health', 'sanitation', 'health score', 'hygiene check', 'biosecurity', 'farm check'],
       kn: ['ಪ್ರಾಣಿ ಆರೋಗ್ಯ', 'ಆರೋಗ್ಯ', 'ನೈರ್ಮಲ್ಯ', 'ಸ್ವಚ್ಛತೆ', 'ನೈರ್ಮಲ್ಯ ಪರೀಕ್ಷೆ', 'ಆರೋಗ್ಯ ಪರೀಕ್ಷೆ', 'ಸ್ವಚ್ಛತೆ ಪರೀಕ್ಷೆ', 'ಫಾರ್ಮ್ ಸ್ವಚ್ಛತೆ', 'hygiene test madi'],
       hi: ['पशु स्वास्थ्य', 'स्वास्थ्य', 'स्वच्छता', 'सफाई', 'हाइजीन टेस्ट', 'सफाई जांच', 'स्वास्थ्य परीक्षण', 'स्वच्छता परीक्षण', 'health test karo', 'safai test karo'],
       te: ['పశువుల ఆరోగ్యం', 'ఆరోగ్యం', 'పరిశుభ్రత', 'పరిశుభ్రత పరీక్ష', 'ఆరోగ్య పరీక్ష', 'ఫారం పరిశుభ్రత'],
@@ -537,7 +537,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମୂଳ ପୃଷ୍ଠାକୁ ଯାଉଛି...',
     },
     aliases: {
-      en: ['go home', 'home', 'homepage', 'dashboard', 'main page', 'start', 'front page', 'main dashboard'],
+      en: ['go home', 'home', 'homepage', 'dashboard', 'open dashboard', 'main page', 'start', 'front page', 'main dashboard'],
       kn: ['ಮುಖಪುಟ', 'ಹೋಮ್', 'ಮನೆ', 'ಮನೆಗೆ ಹೋಗಿ', 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್', 'ಆರಂಭ', 'ಹೋಮ್ ಪುಟ', 'ಹೋಮ್ ಗೆ ಹೋಗಿ', 'home ge hogi'],
       hi: ['होम', 'घर', 'मुख्य पृष्ठ', 'डैशबोर्ड', 'होम पेज', 'होम पर जाओ', 'शुरू', 'होम जाओ', 'home jao'],
       te: ['హోమ్', 'ప్రధాన పేజీ', 'డాష్‌బోర్డ్', 'హోమ్ పేజీకి వెళ్లు', 'మొదటి పేజీ', 'home ki vellu'],

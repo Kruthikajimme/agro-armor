@@ -1,7 +1,8 @@
 // GPS Tracking API
 
 // Import API configuration from todoApi
-const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api'; // Use VITE_API_URL for production, proxy for development
+const rawBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
+const API_BASE = !rawBase ? '/api' : (rawBase.endsWith('/api') ? rawBase : `${rawBase.replace(/\/+$/, '')}/api`);
 
 // Get auth token from localStorage
 const getAuthToken = () => {

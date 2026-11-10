@@ -8,7 +8,8 @@ import {
   Crown, Bell, User, ChevronDown, LayoutDashboard, Store, Info, 
   Home as HomeIcon, Settings, Wrench, ShieldCheck, Footprints, 
   ClipboardList, MapPin, Stethoscope, AlertTriangle, Menu, X,
-  Activity, Zap, Users, ShoppingCart, Trash2, Plus, Minus, PackageOpen
+  Activity, Zap, Users, ShoppingCart, Trash2, Plus, Minus, PackageOpen,
+  Mic
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationCenter from "./NotificationCenter";
@@ -124,6 +125,22 @@ const Navbar = () => {
                   <MobileNavLink to="/todo-list" icon={ClipboardList}>{t('todoList')}</MobileNavLink>
                   <MobileNavLink to="/gps-tracking" icon={MapPin}>{t('gpsTracking')}</MobileNavLink>
                   <MobileNavLink to="/compliance" icon={ShieldCheck}>{t('compliance')}</MobileNavLink>
+                  
+                  <div className="my-4 h-px bg-slate-100 mx-2" />
+
+                  <div className="px-4 mb-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        window.dispatchEvent(new CustomEvent('agroarmor:open-voice'));
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors border border-emerald-200"
+                    >
+                      <Mic className="w-5 h-5 text-emerald-600 animate-pulse" />
+                      <span>Voice Navigation (ಧ್ವನಿ / आवाज)</span>
+                    </button>
+                  </div>
                   
                   <div className="mt-8 px-4">
                      <Button className="w-full h-12 bg-primary font-bold text-white shadow-elegant rounded-xl mb-4" onClick={handleLogout}>
@@ -256,6 +273,25 @@ const Navbar = () => {
               <Bell className="w-5 h-5 text-muted-foreground" />
             </Button>
 
+            {/* Voice Navigation Mic Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('agroarmor:open-voice'));
+              }}
+              className="relative hover:bg-emerald-50 text-emerald-600 hover:text-emerald-700 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
+              title="Voice Navigation (ಕನ್ನಡ, हिन्दी, English, தமிழ்...)"
+              aria-label="Voice Navigation"
+              id="navbar-voice-assistant-btn"
+            >
+              <Mic className="w-5 h-5 text-emerald-600" />
+              <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+            </Button>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover:bg-secondary rounded-full overflow-hidden">
@@ -383,6 +419,18 @@ const Navbar = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <div className="ml-auto">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('agroarmor:open-voice'))}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-all border border-emerald-200 shadow-xs group"
+              title="Voice Assistant & Navigation"
+            >
+              <Mic className="w-3.5 h-3.5 text-emerald-600 animate-pulse group-hover:scale-110 transition-transform" />
+              <span>Voice Navigation</span>
+            </button>
+          </div>
 
         </div>
       </div>

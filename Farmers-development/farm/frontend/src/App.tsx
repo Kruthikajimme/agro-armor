@@ -20,6 +20,8 @@ import MedicalPage from "@/pages/MedicalPage.tsx";
 import SubscriptionPlans from "@/components/SubscriptionPlans.tsx";
 import ComplianceTracker from "@/pages/ComplianceTracker.tsx";
 import Community from "@/pages/Community.tsx";
+import FindVet from "@/pages/FindVet.tsx";
+import AdminPortal from "@/pages/AdminPortal.tsx";
 import VoiceAssistant from "@/components/VoiceAssistant.tsx";
 import { CartProvider } from "@/contexts/CartContext";
 
@@ -87,6 +89,8 @@ const AppContent = () => {
             <Route path="/subscription" element={<SubscriptionPlans onSubscribe={() => {}} />} />
             <Route path="/compliance" element={<ComplianceTracker />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/find-vet" element={<FindVet />} />
+            <Route path="/admin" element={<AdminPortal />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

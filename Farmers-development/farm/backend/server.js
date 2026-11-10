@@ -7,8 +7,12 @@ const dns = require('dns');
 // Override DNS to bypass SRV lookup failures in restricted networks
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-// Load environment variables
+// Load environment variables from any standard location
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
+require('dotenv').config();
 
 // Import database connection
 const connectDB = require('./config/db');
@@ -23,10 +27,6 @@ const doctorClinicRoutes = require('./routes/doctorClinic.routes');
 const appointmentRoutes = require('./routes/appointment.routes');
 const diseaseDetectionRoutes = require('./routes/diseaseDetection.routes');
 const communityRoutes = require('./routes/community.routes');
-const animalRoutes = require('./routes/animal.routes');
-const adminRoutes = require('./routes/admin.routes');
-const consultationRoutes = require('./routes/consultation.routes');
-const supportMessageRoutes = require('./routes/supportMessage.routes');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -53,20 +53,31 @@ if (!process.env.JWT_SECRET) {
 }
 
 // Middleware
+const allowedOrigins = [
+  "https://agroarmourlsm-frontend.onrender.com",
+  "https://agroarmor-v2.onrender.com",
+  "http://16.176.157.113", 
+  "http://localhost:8083", 
+  "http://localhost:8084", 
+  "http://localhost:8085", 
+  "http://localhost:8086", 
+  "http://127.0.0.1:8083", 
+  "http://127.0.0.1:8084", 
+  "http://127.0.0.1:8085", 
+  "http://127.0.0.1:8086"
+];
+if (process.env.CLIENT_ORIGIN && !allowedOrigins.includes(process.env.CLIENT_ORIGIN)) {
+  allowedOrigins.push(process.env.CLIENT_ORIGIN);
+}
+
 app.use(cors({
-  origin: [
-    "https://agroarmourlsm-frontend.onrender.com",  // V1 – do not remove
-    "https://agroarmor-v2.onrender.com",             // V2 A/B-testing frontend
-    "http://16.176.157.113", 
-    "http://localhost:8083", 
-    "http://localhost:8084", 
-    "http://localhost:8085", 
-    "http://localhost:8086", 
-    "http://127.0.0.1:8083", 
-    "http://127.0.0.1:8084", 
-    "http://127.0.0.1:8085", 
-    "http://127.0.0.1:8086"
-  ],
+  origin: (origin, callback) => {
+    // Allow non-browser requests or matching origins (including any .onrender.com preview/production URL)
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: '50mb' }));
@@ -102,10 +113,6 @@ app.use('/api/medical', doctorClinicRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/detections', diseaseDetectionRoutes);
 app.use('/api/community', communityRoutes);
-app.use('/api/animals', animalRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/consultations', consultationRoutes);
-app.use('/api/support', supportMessageRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -122,9 +129,7 @@ app.get('/', (req, res) => {
       medical: '/api/medical',
       appointments: '/api/appointments',
       detections: '/api/detections',
-      animals: '/api/animals',
-      admin: '/api/admin',
-      consultations: '/api/consultations'
+      community: '/api/community'
     }
   });
 });

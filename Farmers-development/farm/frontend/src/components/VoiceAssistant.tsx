@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -236,7 +237,7 @@ const VoiceAssistant: React.FC = () => {
   }, [initRecognition]);
 
   // Start listening trigger
-  const startListening = () => {
+  const startListening = useCallback(() => {
     stopSpeaking();
     if (assistantState === 'unsupported') return;
 
@@ -259,10 +260,10 @@ const VoiceAssistant: React.FC = () => {
         }
       }
     }
-  };
+  }, [assistantState, initRecognition, langConfig.bcp47, stopSpeaking]);
 
   // Stop listening trigger
-  const stopListening = () => {
+  const stopListening = useCallback(() => {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
@@ -271,7 +272,22 @@ const VoiceAssistant: React.FC = () => {
       }
     }
     setAssistantState('idle');
-  };
+  }, []);
+
+  // Listen for global navbar voice assistant open events
+  useEffect(() => {
+    const handleOpenVoice = () => {
+      setIsOpen(true);
+      setTimeout(() => {
+        startListening();
+      }, 300);
+    };
+
+    window.addEventListener('agroarmor:open-voice', handleOpenVoice);
+    return () => {
+      window.removeEventListener('agroarmor:open-voice', handleOpenVoice);
+    };
+  }, [startListening]);
 
   const handleLanguageChange = (code: SupportedLanguage) => {
     setActiveVoiceLang(code);

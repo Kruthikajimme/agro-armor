@@ -9,6 +9,7 @@ interface TestCase {
 
 const testCases: TestCase[] = [
   // 1. Marketplace commands
+  { input: 'Take me to Marketplace.', lang: 'en', expectedRoute: '/marketplace', description: 'English: Take me to Marketplace.' },
   { input: 'Open Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'English: Open Marketplace' },
   { input: 'market', lang: 'en', expectedRoute: '/marketplace', description: 'English: market' },
   { input: 'go to market', lang: 'en', expectedRoute: '/marketplace', description: 'English: go to market' },
@@ -21,6 +22,8 @@ const testCases: TestCase[] = [
   { input: 'மார்க்கெட்பிளேஸைத் திறக்கவும்', lang: 'ta', expectedRoute: '/marketplace', description: 'Tamil: மார்க்கெட்பிளேஸைத் திறக்கவும்' },
 
   // 2. Veterinary & Doctor commands
+  { input: 'Open Veterinary.', lang: 'en', expectedRoute: '/medical', description: 'English: Open Veterinary.' },
+  { input: 'Go to Health.', lang: 'en', expectedRoute: '/medical', description: 'English: Go to Health.' },
   { input: 'Go to Veterinary', lang: 'en', expectedRoute: '/medical', description: 'English: Go to Veterinary' },
   { input: 'Open the doctor page', lang: 'en', expectedRoute: '/medical', description: 'English: Open the doctor page' },
   { input: 'doctor', lang: 'en', expectedRoute: '/medical', description: 'English: doctor' },
@@ -45,6 +48,7 @@ const testCases: TestCase[] = [
   { input: 'நோய் பரிசோதனை', lang: 'ta', expectedRoute: '/medical', description: 'Tamil: நோய் பரிசோதனை' },
 
   // 4. GPS & Livestock tracking
+  { input: 'Show my livestock.', lang: 'en', expectedRoute: '/gps-tracking', description: 'English: Show my livestock.' },
   { input: 'Track my animal', lang: 'en', expectedRoute: '/gps-tracking', description: 'English: Track my animal' },
   { input: 'gps tracking', lang: 'en', expectedRoute: '/gps-tracking', description: 'English: gps tracking' },
   { input: 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್', lang: 'kn', expectedRoute: '/gps-tracking', description: 'Kannada: ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್' },
@@ -72,6 +76,9 @@ const testCases: TestCase[] = [
   { input: 'నా ప్రొఫైల్', lang: 'te', expectedRoute: '/profile', description: 'Telugu: నా ప్రొఫైల్' },
 
   // 7. Navigation controls: Home, Back, Help
+  { input: 'Open Dashboard.', lang: 'en', expectedRoute: '/', description: 'English: Open Dashboard.' },
+  { input: 'Go to Hygiene.', lang: 'en', expectedRoute: '/hygiene-test', description: 'English: Go to Hygiene.' },
+  { input: 'Go back.', lang: 'en', expectedRoute: '__back__', description: 'English: Go back.' },
   { input: 'Go home', lang: 'en', expectedRoute: '/', description: 'English: Go home' },
   { input: 'home page', lang: 'en', expectedRoute: '/', description: 'English: home page' },
   { input: 'ಮನೆಗೆ ಹೋಗಿ', lang: 'kn', expectedRoute: '/', description: 'Kannada: ಮನೆಗೆ ಹೋಗಿ' },
