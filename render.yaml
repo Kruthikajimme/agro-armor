@@ -1,12 +1,16 @@
 # Render Blueprint Specification for AgroArmor
+# Personal Owner: Kruthikajimme
+# Repository: https://github.com/Kruthikajimme/agro-armor
 # Docs: https://render.com/docs/blueprint-spec
 
 services:
   # 1. Python Flask ML Disease Detection Microservice
   - type: web
-    name: agroarmour-ml
+    name: agro-armor-ml
     runtime: python
     rootDir: Farmers-development/ML
+    branch: main
+    autoDeployTrigger: commit
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
     plan: free
@@ -17,9 +21,11 @@ services:
 
   # 2. Node.js Express Backend API
   - type: web
-    name: agroarmour-backend
+    name: agro-armor-backend
     runtime: node
     rootDir: Farmers-development/farm/backend
+    branch: main
+    autoDeployTrigger: commit
     buildCommand: npm install
     startCommand: node server.js
     plan: free
@@ -28,7 +34,11 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: CLIENT_ORIGIN
-        value: https://agroarmourlsm-frontend.onrender.com
+        value: https://agro-armor-frontend.onrender.com
+      - key: ML_API_URL
+        value: https://agro-armor-ml.onrender.com
+      - key: DB_NAME
+        value: agroarmor
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
@@ -36,9 +46,11 @@ services:
 
   # 3. React Vite Frontend (Static Site on Global CDN)
   - type: web
-    name: agroarmourlsm-frontend
+    name: agro-armor-frontend
     runtime: static
     rootDir: Farmers-development/farm/frontend
+    branch: main
+    autoDeployTrigger: commit
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
@@ -47,6 +59,6 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://agroarmour-backend.onrender.com
+        value: https://agro-armor-backend.onrender.com
       - key: VITE_ML_API_URL
-        value: https://agroarmour-ml.onrender.com
+        value: https://agro-armor-ml.onrender.com

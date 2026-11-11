@@ -91,7 +91,7 @@ def root():
 def health():
     return jsonify({
         'status': 'ok',
-        'service': 'agroarmour-ml',
+        'service': 'agro-armor-ml',
         'model_loaded': model is not None,
         'model_error': model_load_error
     }), 200

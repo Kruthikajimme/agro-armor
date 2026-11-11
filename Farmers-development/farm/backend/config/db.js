@@ -19,8 +19,8 @@ const connectDB = async () => {
 
     console.log('⏳ Connecting to MongoDB...');
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'farm-management',
-      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+      dbName: process.env.DB_NAME || 'agroarmor',
+      serverSelectionTimeoutMS: 8000, // Timeout after 8 seconds
     });
     
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);

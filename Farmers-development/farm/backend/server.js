@@ -54,6 +54,7 @@ if (!process.env.JWT_SECRET) {
 
 // Middleware
 const allowedOrigins = [
+  "https://agro-armor-frontend.onrender.com",
   "https://agroarmourlsm-frontend.onrender.com",
   "https://agroarmor-v2.onrender.com",
   "http://16.176.157.113", 
