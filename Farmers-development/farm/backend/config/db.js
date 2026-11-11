@@ -20,6 +20,7 @@ const connectDB = async () => {
     console.log('⏳ Connecting to MongoDB...');
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: process.env.DB_NAME || 'agroarmor',
+      authSource: 'admin',
       serverSelectionTimeoutMS: 8000, // Timeout after 8 seconds
     });
     
