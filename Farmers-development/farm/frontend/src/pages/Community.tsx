@@ -51,7 +51,9 @@ const Community = () => {
   const [translatedContent, setTranslatedContent] = useState<Record<string, string>>({});
   const [isTranslating, setIsTranslating] = useState<Record<string, boolean>>({});
 
-  const API_URL = 'http://localhost:5002/api/community';
+  const rawBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
+  const API_BASE = !rawBase ? '/api' : (rawBase.endsWith('/api') ? rawBase : `${rawBase.replace(/\/+$/, '')}/api`);
+  const API_URL = `${API_BASE}/community`;
 
   useEffect(() => {
     fetchCurrentUser();

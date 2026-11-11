@@ -17,17 +17,32 @@ CORS(app)
 
 # Load model with tf_keras compatibility for Keras 2 depthwise convolution layers
 model_path = os.path.join(os.path.dirname(__file__), 'chicken_disease_model.h5')
+model = None
+model_load_error = None
+
 try:
     import tf_keras as keras
     model = keras.models.load_model(model_path)
-except Exception:
-    import tensorflow as tf
-    model = tf.keras.models.load_model(model_path)
+    print("Model loaded successfully with tf_keras!")
+except Exception as e1:
+    try:
+        import tensorflow as tf
+        model = tf.keras.models.load_model(model_path)
+        print("Model loaded successfully with tensorflow.keras!")
+    except Exception as e2:
+        model_load_error = f"tf_keras: {str(e1)} | tf.keras: {str(e2)}"
+        print(f"Warning: Model could not be loaded: {model_load_error}")
 
 classes = ['Coccidiosis', 'Healthy', 'New Castle Disease', 'Salmonella']
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if model is None:
+        return jsonify({
+            'error': 'ML model is not loaded',
+            'details': model_load_error
+        }), 503
+
     if 'image' not in request.files:
         return jsonify({'error': 'No image provided'}), 400
     
@@ -74,7 +89,12 @@ def root():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'ok', 'model_loaded': True})
+    return jsonify({
+        'status': 'ok',
+        'service': 'agroarmour-ml',
+        'model_loaded': model is not None,
+        'model_error': model_load_error
+    }), 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

@@ -87,19 +87,20 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.get('/health', async (req, res) => {
   try {
     const mongoose = require('mongoose');
-    if (mongoose.connection.readyState === 1) {
-      await mongoose.connection.db.admin().ping();
-      res.status(200).json({ 
-        status: 'OK', 
-        db: 'Connected',
-        database: mongoose.connection.name,
-        timestamp: new Date().toISOString()
-      });
-    } else {
-      res.status(500).json({ status: 'Error', db: 'Disconnected' });
-    }
+    const isConnected = mongoose.connection.readyState === 1;
+    res.status(200).json({ 
+      status: 'OK', 
+      db: isConnected ? 'Connected' : 'Connecting',
+      database: isConnected ? mongoose.connection.name : null,
+      timestamp: new Date().toISOString()
+    });
   } catch (error) {
-    res.status(500).json({ status: 'Error', db: 'Disconnected' });
+    res.status(200).json({ 
+      status: 'Degraded', 
+      db: 'Error',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
@@ -150,8 +151,8 @@ const startServer = async () => {
     // Start notification scheduler
     notificationService.startScheduler();
     
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on 0.0.0.0:${PORT}`);
       console.log(`📱 Client origin: ${CLIENT_ORIGIN}`);
       console.log(`🔊 Voice announcements: Enabled`);
       console.log(`📅 Notifications: Enabled`);

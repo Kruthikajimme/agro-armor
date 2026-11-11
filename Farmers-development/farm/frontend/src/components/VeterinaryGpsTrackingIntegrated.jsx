@@ -109,8 +109,10 @@ const VeterinaryGpsTracking = () => {
         ...(specialization && { specialization }),
       });
 
+      const rawBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
+      const API_BASE = !rawBase ? '/api' : (rawBase.endsWith('/api') ? rawBase : `${rawBase.replace(/\/+$/, '')}/api`);
       const token = localStorage.getItem('authToken');
-      const response = await fetch(`/api/medical/doctors/nearby?${params}`, {
+      const response = await fetch(`${API_BASE}/medical/doctors/nearby?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

@@ -200,7 +200,9 @@ const PaymentModal = ({ isOpen, onClose, items, subscription, onSuccess }: Payme
 
   const verifyPayment = async (response: any) => {
     try {
-      const verifyResponse = await fetch('/api/payments/verify', {
+      const rawBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
+      const API_BASE = !rawBase ? '/api' : (rawBase.endsWith('/api') ? rawBase : `${rawBase.replace(/\/+$/, '')}/api`);
+      const verifyResponse = await fetch(`${API_BASE}/payments/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

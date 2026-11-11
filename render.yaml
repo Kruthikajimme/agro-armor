@@ -5,7 +5,7 @@ services:
   # 1. Python Flask ML Disease Detection Microservice
   - type: web
     name: agroarmour-ml
-    env: python
+    runtime: python
     rootDir: Farmers-development/ML
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
@@ -14,13 +14,11 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
-      - key: PORT
-        value: 5000
 
   # 2. Node.js Express Backend API
   - type: web
     name: agroarmour-backend
-    env: node
+    runtime: node
     rootDir: Farmers-development/farm/backend
     buildCommand: npm install
     startCommand: node server.js
@@ -29,8 +27,6 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20
-      - key: PORT
-        value: 5002
       - key: CLIENT_ORIGIN
         value: https://agroarmourlsm-frontend.onrender.com
       - key: MONGODB_URI
@@ -38,14 +34,13 @@ services:
       - key: JWT_SECRET
         sync: false
 
-  # 3. React Vite Frontend
+  # 3. React Vite Frontend (Static Site on Global CDN)
   - type: web
     name: agroarmourlsm-frontend
-    env: static
+    runtime: static
     rootDir: Farmers-development/farm/frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
-    plan: free
     routes:
       - type: rewrite
         source: /*
