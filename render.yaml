@@ -8,6 +8,7 @@ services:
   - type: web
     name: agro-armor-ml
     runtime: python
+    region: singapore
     rootDir: Farmers-development/ML
     branch: main
     autoDeployTrigger: commit
@@ -23,6 +24,7 @@ services:
   - type: web
     name: agro-armor-backend
     runtime: node
+    region: singapore
     rootDir: Farmers-development/farm/backend
     branch: main
     autoDeployTrigger: commit
