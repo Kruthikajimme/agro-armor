@@ -89,12 +89,20 @@ def root():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({
-        'status': 'ok',
-        'service': 'agro-armor-ml',
-        'model_loaded': model is not None,
-        'model_error': model_load_error
-    }), 200
+    if model is not None:
+        return jsonify({
+            'status': 'healthy',
+            'service': 'agro-armor-ml',
+            'model_loaded': True,
+            'classes': classes
+        }), 200
+    else:
+        return jsonify({
+            'status': 'unhealthy',
+            'service': 'agro-armor-ml',
+            'model_loaded': False,
+            'error': 'TensorFlow model is currently unavailable or failed to load'
+        }), 503
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

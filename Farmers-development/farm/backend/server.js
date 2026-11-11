@@ -58,10 +58,12 @@ const allowedOrigins = [
   "https://agroarmourlsm-frontend.onrender.com",
   "https://agroarmor-v2.onrender.com",
   "http://16.176.157.113", 
+  "http://localhost:8080", 
   "http://localhost:8083", 
   "http://localhost:8084", 
   "http://localhost:8085", 
   "http://localhost:8086", 
+  "http://127.0.0.1:8080", 
   "http://127.0.0.1:8083", 
   "http://127.0.0.1:8084", 
   "http://127.0.0.1:8085", 
@@ -73,11 +75,18 @@ if (process.env.CLIENT_ORIGIN && !allowedOrigins.includes(process.env.CLIENT_ORI
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow non-browser requests or matching origins (including any .onrender.com preview/production URL)
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+    // Allow non-browser requests (mobile apps, server-to-server, health checks)
+    if (!origin) {
       return callback(null, true);
     }
-    return callback(null, true);
+    // Allow only explicitly approved origins
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Reject unapproved browser origins
+    const corsError = new Error('CORS: Origin not allowed');
+    corsError.status = 403;
+    return callback(corsError);
   },
   credentials: true,
 }));
