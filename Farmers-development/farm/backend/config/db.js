@@ -60,41 +60,61 @@ const inspectAndMaskUri = (rawUri) => {
   return { cleanUri, maskedUri, username, passLength, host, queryParams, hasBrackets, atCount };
 };
 
+let isConnecting = false;
+let retryTimer = null;
+
 const connectDB = async () => {
+  if (mongoose.connection.readyState === 1) {
+    return true;
+  }
+  if (isConnecting) {
+    return false;
+  }
+
+  const rawUri = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.MONGODB_URL || process.env.DATABASE_URL;
+
+  if (!rawUri) {
+    console.error('❌ Missing required environment variable: MONGODB_URI');
+    console.error('💡 Please check your .env file or Render environment variables.');
+    return false;
+  }
+
+  isConnecting = true;
+  const { cleanUri, maskedUri, username, passLength, host, queryParams, hasBrackets, atCount } = inspectAndMaskUri(rawUri);
+
+  console.log('⏳ Connecting to MongoDB...');
+  console.log(`🔍 [DB DIAGNOSTIC] Host: ${host}`);
+  console.log(`🔍 [DB DIAGNOSTIC] User: ${username} (Password length: ${passLength} chars)`);
+  console.log(`🔍 [DB DIAGNOSTIC] Query params: ${queryParams || '(none)'}`);
+  console.log(`🔍 [DB DIAGNOSTIC] URI: ${maskedUri}`);
+
+  if (hasBrackets) {
+    console.error('⚠️ [DB CONFIG ERROR] MONGODB_URI contains literal "<" or ">" characters!');
+    console.error('👉 In Render environment variables, replace <password> with your actual password without the angle brackets.');
+  }
+
+  if (atCount > 1) {
+    console.error('⚠️ [DB CONFIG ERROR] MONGODB_URI contains multiple "@" symbols!');
+    console.error('👉 If your password contains "@", it must be URL-encoded (%40) or replaced with an alphanumeric password.');
+  }
+
   try {
-    if (!process.env.MONGODB_URI) {
-      console.error('❌ Missing required environment variable: MONGODB_URI');
-      console.error('💡 Please check your .env file or Render environment variables.');
-      process.exit(1);
-    }
-
-    const { cleanUri, maskedUri, username, passLength, host, queryParams, hasBrackets, atCount } = inspectAndMaskUri(process.env.MONGODB_URI);
-
-    console.log('⏳ Connecting to MongoDB...');
-    console.log(`🔍 [DB DIAGNOSTIC] Host: ${host}`);
-    console.log(`🔍 [DB DIAGNOSTIC] User: ${username} (Password length: ${passLength} chars)`);
-    console.log(`🔍 [DB DIAGNOSTIC] Query params: ${queryParams || '(none)'}`);
-    console.log(`🔍 [DB DIAGNOSTIC] URI: ${maskedUri}`);
-
-    if (hasBrackets) {
-      console.error('⚠️ [DB CONFIG ERROR] MONGODB_URI contains literal "<" or ">" characters!');
-      console.error('👉 In Render environment variables, replace <password> with your actual password without the angle brackets.');
-    }
-
-    if (atCount > 1) {
-      console.error('⚠️ [DB CONFIG ERROR] MONGODB_URI contains multiple "@" symbols!');
-      console.error('👉 If your password contains "@", it must be URL-encoded (%40) or replaced with an alphanumeric password.');
-    }
-
     const conn = await mongoose.connect(cleanUri, {
       dbName: process.env.DB_NAME || 'agroarmor',
       authSource: 'admin',
       serverSelectionTimeoutMS: 8000, // Timeout after 8 seconds
     });
     
+    isConnecting = false;
+    if (retryTimer) {
+      clearTimeout(retryTimer);
+      retryTimer = null;
+    }
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     console.log(`📂 Database: ${conn.connection.name}`);
+    return true;
   } catch (error) {
+    isConnecting = false;
     console.error('❌ Error connecting to MongoDB:', error.message);
     if (error.message.includes('authentication failed') || error.message.includes('bad auth')) {
       console.error('💡 TIP: Authentication failed. Verify that:');
@@ -107,8 +127,14 @@ const connectDB = async () => {
     } else if (error.message.includes('ENOTFOUND')) {
       console.error('💡 TIP: Check your internet connection. Unable to resolve MongoDB hostname.');
     }
-    console.error('💥 Backend server cannot start without a database connection.');
-    process.exit(1);
+    console.error('🔄 Database connection failed. Will retry in 10 seconds (server remains online)...');
+    if (!retryTimer) {
+      retryTimer = setTimeout(() => {
+        retryTimer = null;
+        connectDB();
+      }, 10000);
+    }
+    return false;
   }
 };
 
