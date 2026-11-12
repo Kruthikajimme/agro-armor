@@ -232,10 +232,13 @@ class NotificationService {
     }
   }
 
-  // Start notification scheduler
+  // Start notification scheduler (guaranteed idempotent)
   startScheduler() {
+    if (this.schedulerInterval) {
+      return; // Scheduler already running, avoid duplicate intervals
+    }
     // Check for notifications every 5 minutes
-    setInterval(() => {
+    this.schedulerInterval = setInterval(() => {
       this.checkDueNotifications();
     }, 5 * 60 * 1000);
 

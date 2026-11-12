@@ -64,8 +64,8 @@ let isConnecting = false;
 let retryTimer = null;
 
 const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) {
-    return true;
+  if (mongoose.connection.readyState === 1 || mongoose.connection.readyState === 2) {
+    return mongoose.connection.readyState === 1;
   }
   if (isConnecting) {
     return false;

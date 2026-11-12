@@ -49,8 +49,9 @@ if (!mongoUri) {
 }
 
 if (!process.env.JWT_SECRET) {
-  console.warn('⚠️ Missing required environment variable: JWT_SECRET (Using secure fallback)');
-  process.env.JWT_SECRET = 'agroarmor_jwt_secret_fallback_key_2026';
+  console.error('❌ Missing required environment variable: JWT_SECRET');
+  console.error('💡 Please set JWT_SECRET in your Render environment variables.');
+  process.exit(1);
 }
 
 // Middleware
@@ -94,26 +95,51 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Health check endpoint
+// Health check endpoint - reports actual database and service status
 app.get('/health', async (req, res) => {
   try {
     const mongoose = require('mongoose');
-    const isConnected = mongoose.connection.readyState === 1;
-    res.status(200).json({ 
-      status: 'OK', 
-      db: isConnected ? 'Connected' : 'Connecting',
+    const readyState = mongoose.connection.readyState;
+    const isConnected = readyState === 1;
+    const isConnecting = readyState === 2;
+
+    const status = isConnected ? 'healthy' : (isConnecting ? 'connecting' : 'unhealthy');
+    const db = isConnected ? 'Connected' : (isConnecting ? 'Connecting' : 'Disconnected');
+    const httpCode = isConnected ? 200 : 503;
+
+    res.status(httpCode).json({ 
+      status, 
+      service: 'agro-armor-backend',
+      db,
       database: isConnected ? mongoose.connection.name : null,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    res.status(200).json({ 
-      status: 'Degraded', 
+    res.status(503).json({ 
+      status: 'unhealthy', 
+      service: 'agro-armor-backend',
       db: 'Error',
       error: error.message,
       timestamp: new Date().toISOString()
     });
   }
 });
+
+// Middleware to ensure database is available before executing database-dependent API routes
+const requireDatabase = (req, res, next) => {
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      error: 'Database unavailable',
+      message: 'The database is currently connecting or unavailable. Please try again shortly.',
+      dbState: mongoose.connection.readyState === 2 ? 'connecting' : 'disconnected'
+    });
+  }
+  next();
+};
+
+// Protect all /api routes from running against a disconnected database
+app.use('/api', requireDatabase);
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -166,13 +192,9 @@ const startServer = () => {
     });
 
     // Connect to database in background without blocking server binding
-    connectDB().then((connected) => {
-      if (connected) {
-        notificationService.startScheduler();
-      }
-    });
+    connectDB();
 
-    // Also hook into mongoose connection open event for automatic scheduler start
+    // Hook into mongoose connection open event once for scheduler start
     const mongoose = require('mongoose');
     mongoose.connection.once('open', () => {
       notificationService.startScheduler();
