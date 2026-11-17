@@ -21,6 +21,7 @@ import {
   QrCode
 } from "lucide-react";
 import paymentQr from "@/assets/custom_payment_qr.jpeg";
+import { trackPurchase, trackBeginCheckout, type GA4Item } from "@/lib/analytics";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -112,17 +113,42 @@ const PaymentModal = ({ isOpen, onClose, items, subscription, onSuccess }: Payme
   const gstAmount = totalAmount * 0.18; // 18% GST
   const finalAmount = totalAmount + gstAmount;
 
+  // Track single begin_checkout event for direct subscription purchases
+  useEffect(() => {
+    if (isOpen && subscription) {
+      const subItems: GA4Item[] = [{
+        item_id: (subscription as any).id || (subscription as any).planName || 'subscription',
+        item_name: `${(subscription as any).planName || 'Subscription'} (${(subscription as any).duration || (subscription as any).interval || 'Plan'})`,
+        item_category: 'subscription',
+        price: subscription.price,
+        quantity: 1,
+      }];
+      trackBeginCheckout(subscription.price, subItems, gstAmount);
+    }
+  }, [isOpen, subscription]);
+
   const handlePayment = async () => {
     setIsProcessing(true);
     
     // Simulate a delay for processing
     setTimeout(() => {
       setIsProcessing(false);
+      const txnId = `txn_upi_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      if (subscription) {
+        const subItems: GA4Item[] = [{
+          item_id: (subscription as any).id || (subscription as any).planName || 'subscription',
+          item_name: `${(subscription as any).planName || 'Subscription'} (${(subscription as any).duration || (subscription as any).interval || 'Plan'})`,
+          item_category: 'subscription',
+          price: subscription.price,
+          quantity: 1,
+        }];
+        trackPurchase(txnId, subscription.price, subItems, gstAmount);
+      }
       toast({
         title: "Payment Successful!",
         description: "Your payment has been processed successfully via UPI.",
       });
-      onSuccess({ method: 'upi', amount: finalAmount });
+      onSuccess({ method: 'upi', amount: finalAmount, paymentId: txnId, subtotal: totalAmount, gstAmount });
       onClose();
     }, 1500);
   };
@@ -219,6 +245,19 @@ const PaymentModal = ({ isOpen, onClose, items, subscription, onSuccess }: Payme
       const result = await verifyResponse.json();
       
       if (result.success) {
+        // Track GA4 Purchase for standalone subscriptions (Marketplace purchases tracked in CheckoutModal onSuccess)
+        if (subscription) {
+          const txnId = result.payment?.paymentId || response.razorpay_payment_id || `sub_${Date.now()}`;
+          const subItems: GA4Item[] = [{
+            item_id: (subscription as any).id || (subscription as any).planName || 'subscription',
+            item_name: `${(subscription as any).planName || 'Subscription'} (${(subscription as any).duration || (subscription as any).interval || 'Plan'})`,
+            item_category: 'subscription',
+            price: subscription.price,
+            quantity: 1,
+          }];
+          trackPurchase(txnId, subscription.price, subItems, gstAmount);
+        }
+
         toast({
           title: "Payment Successful!",
           description: "Your subscription has been activated.",

@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import { trackViewItemList, trackViewItem, trackAddToCart, trackPurchase, type GA4Item } from "@/lib/analytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -139,6 +140,10 @@ const Marketplace = () => {
   );
   */
 
+  useEffect(() => {
+    trackViewItemList("Marketplace Products", marketplaceItems.length);
+  }, [marketplaceItems.length]);
+
   const handleVoiceSearch = (text: string) => {
     setSearchQuery(text);
     toast({
@@ -158,6 +163,13 @@ const Marketplace = () => {
     }
 
     addToCart(item);
+    trackAddToCart({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      quantity: 1,
+    });
     toast({
       title: '🛒 Added to Cart!',
       description: `${item.name} has been added to your cart.`,
@@ -180,6 +192,12 @@ const Marketplace = () => {
   const handleViewDetails = (item: MarketplaceItem) => {
     setSelectedItem(item);
     setIsDialogOpen(true);
+    trackViewItem({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      price: item.price,
+    });
   };
 
   const handleContactSeller = (seller: MarketplaceItem['seller']) => {
@@ -527,6 +545,13 @@ const Marketplace = () => {
                   <Button 
                     onClick={() => {
                        addToCart(selectedItem);
+                       trackAddToCart({
+                         id: selectedItem.id,
+                         name: selectedItem.name,
+                         category: selectedItem.category,
+                         price: selectedItem.price,
+                         quantity: 1,
+                       });
                        toast({title: "Added to Cart!", description: `${selectedItem.name} was added to your cart.`});
                     }}
                     variant="outline"
@@ -560,6 +585,22 @@ const Marketplace = () => {
           const itemsBought = buyNowItem ? [{ ...buyNowItem, quantity: 1, date: new Date().toLocaleDateString() }] : cart.map(item => ({ ...item, quantity: item.quantity || 1, date: new Date().toLocaleDateString() }));
           const existingOrders = JSON.parse(localStorage.getItem('user_orders') || '[]');
           localStorage.setItem('user_orders', JSON.stringify([...itemsBought, ...existingOrders]));
+
+          // Item subtotal excluding GST, with GST sent separately via tax
+          const subtotal = paymentData?.subtotal ?? itemsBought.reduce((sum, it) => sum + (it.price * (it.quantity || 1)), 0);
+          const taxAmount = paymentData?.gstAmount ?? (subtotal * 0.18);
+          const txnId = paymentData?.paymentId || paymentData?.orderId || `order_${Date.now()}`;
+
+          const ga4Items: GA4Item[] = itemsBought.map(it => ({
+            item_id: it.id || it.sku || 'product',
+            item_name: it.name,
+            item_category: it.category,
+            price: it.price,
+            quantity: it.quantity || 1,
+          }));
+
+          // Track GA4 Purchase with item subtotal as value, separate tax, and items array
+          trackPurchase(txnId, subtotal, ga4Items, taxAmount);
 
           toast({
             title: t('orderPlaced') || "Order Placed Successfully!",

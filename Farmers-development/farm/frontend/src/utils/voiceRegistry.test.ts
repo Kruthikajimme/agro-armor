@@ -1,4 +1,5 @@
-import { matchVoiceCommand, normalizeVoiceInput, SupportedLanguage } from './voiceRegistry';
+import { matchVoiceCommand, normalizeVoiceInput } from './voiceRegistry.ts';
+import type { SupportedLanguage } from './voiceRegistry.ts';
 
 interface TestCase {
   input: string;
@@ -8,6 +9,19 @@ interface TestCase {
 }
 
 const testCases: TestCase[] = [
+  // Required User Navigation Test Cases
+  { input: 'Go to Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'User test: Go to Marketplace' },
+  { input: 'Open Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'User test: Open Marketplace' },
+  { input: 'Take me to Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'User test: Take me to Marketplace' },
+  { input: 'Show me the Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'User test: Show me the Marketplace' },
+  { input: 'Navigate to Veterinary', lang: 'en', expectedRoute: '/medical', description: 'User test: Navigate to Veterinary' },
+  { input: 'Open Disease Scan', lang: 'en', expectedRoute: '/medical', description: 'User test: Open Disease Scan' },
+  { input: 'Go to GPS Tracking', lang: 'en', expectedRoute: '/gps-tracking', description: 'User test: Go to GPS Tracking' },
+  { input: 'Show my Tasks', lang: 'en', expectedRoute: '/todo-list', description: 'User test: Show my Tasks' },
+  { input: 'Go to Home', lang: 'en', expectedRoute: '/', description: 'User test: Go to Home' },
+  { input: 'Find nearby vet', lang: 'en', expectedRoute: '/find-vet', description: 'User test: Find nearby vet' },
+  { input: 'Open Hygiene Test', lang: 'en', expectedRoute: '/hygiene-test', description: 'User test: Open Hygiene Test' },
+
   // 1. Marketplace commands
   { input: 'Take me to Marketplace.', lang: 'en', expectedRoute: '/marketplace', description: 'English: Take me to Marketplace.' },
   { input: 'Open Marketplace', lang: 'en', expectedRoute: '/marketplace', description: 'English: Open Marketplace' },
