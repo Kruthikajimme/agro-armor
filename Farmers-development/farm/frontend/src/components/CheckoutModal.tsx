@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { MapPin, User, Phone, Home, ArrowRight } from "lucide-react";
 import PaymentModal from "./PaymentModal";
 import { useCart } from "@/contexts/CartContext"; // Import useCart hook
+import { trackBeginCheckout, type GA4Item } from "@/lib/analytics";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -70,6 +71,20 @@ const CheckoutModal = ({ isOpen, onClose, items, onSuccess }: CheckoutModalProps
   const gstAmount = totalAmount * 0.18;
   const finalAmount = totalAmount + gstAmount;
 
+  // Track single begin_checkout event with standard items array and tax when checkout modal opens
+  useEffect(() => {
+    if (isOpen && items.length > 0) {
+      const ga4Items: GA4Item[] = items.map(item => ({
+        item_id: item.id || item.sku || 'product',
+        item_name: item.name,
+        item_category: item.category,
+        price: item.price,
+        quantity: item.quantity || 1,
+      }));
+      trackBeginCheckout(totalAmount, ga4Items, gstAmount);
+    }
+  }, [isOpen]);
+
   const validateForm = (): boolean => {
     const newErrors: Partial<ShippingDetails> = {};
 
@@ -109,7 +124,10 @@ const CheckoutModal = ({ isOpen, onClose, items, onSuccess }: CheckoutModalProps
   const handlePaymentSuccess = (paymentData: any) => {
     onSuccess({
       ...paymentData,
-      shippingDetails
+      shippingDetails,
+      subtotal: totalAmount,
+      finalAmount,
+      gstAmount,
     });
     setIsPaymentOpen(false);
     onClose();

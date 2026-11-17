@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import {
   HelpCircle,
   ArrowRight,
   CheckCircle2,
-  RefreshCw
+  Send
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -27,6 +26,7 @@ import {
   matchVoiceCommand,
   MatchResult
 } from "@/utils/voiceRegistry";
+import { trackVoiceNavigation } from "@/lib/analytics";
 
 // --- Types for Web Speech API ---
 interface SpeechRecognitionEvent extends Event {
@@ -58,11 +58,19 @@ const VoiceAssistant: React.FC = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showHelpGuide, setShowHelpGuide] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true);
+  const [manualInput, setManualInput] = useState("");
 
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(typeof window !== 'undefined' ? window.speechSynthesis : null);
   const isNavigatingRef = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const assistantStateRef = useRef<AssistantState>(assistantState);
+  const latestTranscriptRef = useRef<string>("");
+  const isProcessingRef = useRef<boolean>(false);
+
+  // Keep assistantStateRef synchronized without causing callback recreation
+  useEffect(() => {
+    assistantStateRef.current = assistantState;
+  }, [assistantState]);
 
   const uiText = VOICE_UI_TEXT[activeVoiceLang] || VOICE_UI_TEXT.en;
   const samplePhrases = QUICK_SAMPLE_PHRASES[activeVoiceLang] || QUICK_SAMPLE_PHRASES.en;
@@ -77,37 +85,46 @@ const VoiceAssistant: React.FC = () => {
 
   // Stop speaking
   const stopSpeaking = useCallback(() => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch (e) {
+        // safe ignore
+      }
     }
   }, []);
 
   // Speak confirmation using browser SpeechSynthesis
   const speakFeedback = useCallback((text: string, langCode: string) => {
-    if (!ttsEnabled || !synthRef.current) return;
+    if (!ttsEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
     try {
       stopSpeaking();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95; // Slightly slower for clarity
       utterance.pitch = 1.0;
       utterance.lang = langCode;
 
       // Try finding a matching voice
-      const voices = synthRef.current.getVoices?.() || [];
-      const prefix = langCode.split('-')[0].toLowerCase();
-      const matchingVoice = voices.find(v => v.lang.toLowerCase().startsWith(prefix));
-      if (matchingVoice) {
-        utterance.voice = matchingVoice;
+      const voices = window.speechSynthesis.getVoices?.() || [];
+      if (voices.length > 0) {
+        const prefix = langCode.split('-')[0].toLowerCase();
+        const matchingVoice = voices.find(v => v.lang.toLowerCase().startsWith(prefix));
+        if (matchingVoice) {
+          utterance.voice = matchingVoice;
+        }
       }
 
-      synthRef.current.speak(utterance);
+      window.speechSynthesis.speak(utterance);
     } catch (e) {
-      console.warn("Speech synthesis error:", e);
+      console.warn("[VoiceAssistant] Speech synthesis error:", e);
     }
   }, [ttsEnabled, stopSpeaking]);
 
   // Execute recognized navigation
-  const executeNavigation = useCallback((match: MatchResult) => {
+  const executeNavigation = useCallback((match: MatchResult, originalCommand: string) => {
     if (isNavigatingRef.current) return;
     isNavigatingRef.current = true;
 
@@ -115,25 +132,35 @@ const VoiceAssistant: React.FC = () => {
     setFeedbackMessage(match.confirmation);
     speakFeedback(match.confirmation, langConfig.bcp47);
 
-    // Short delay so the farmer hears the confirmation and sees the green success badge
+    // Track voice navigation for analytics
+    try {
+      trackVoiceNavigation(originalCommand, match.route);
+    } catch (e) {
+      console.warn("[VoiceAssistant] Analytics error:", e);
+    }
+
+    // Snappy responsive transition: 400ms visual confirmation, then navigate smoothly
     setTimeout(() => {
       if (match.route === '__back__') {
         navigate(-1);
       } else if (match.route === '__help__') {
         setShowHelpGuide(true);
-        setAssistantState('idle');
       } else {
         navigate(match.route);
-        // Auto-minimize after navigating to clean the screen on mobile
-        setTimeout(() => {
-          setIsOpen(false);
-        }, 800);
       }
-      isNavigatingRef.current = false;
-    }, 1100);
+
+      // Auto-minimize after navigating
+      setTimeout(() => {
+        setIsOpen(false);
+        setAssistantState('idle');
+        setTranscript("");
+        setFeedbackMessage("");
+        isNavigatingRef.current = false;
+      }, 500);
+    }, 400);
   }, [langConfig.bcp47, navigate, speakFeedback]);
 
-  // Process text command (from speech or tapped chips)
+  // Process text command (from speech, manual input, or tapped chips)
   const processCommandText = useCallback((spokenText: string) => {
     if (!spokenText.trim()) {
       setAssistantState('idle');
@@ -147,132 +174,179 @@ const VoiceAssistant: React.FC = () => {
     setTimeout(() => {
       const match = matchVoiceCommand(spokenText, activeVoiceLang);
       if (match) {
-        executeNavigation(match);
+        executeNavigation(match, spokenText);
       } else {
         setAssistantState('not_understood');
-        const notUnderstoodMsg = uiText.notUnderstood;
+        const notUnderstoodMsg = uiText.notUnderstood || "Sorry, I didn't understand. Please try again.";
         setFeedbackMessage(notUnderstoodMsg);
         speakFeedback(notUnderstoodMsg, langConfig.bcp47);
       }
-    }, 350);
+    }, 250);
   }, [activeVoiceLang, executeNavigation, langConfig.bcp47, speakFeedback, uiText.notUnderstood]);
 
-  // Initialize Speech Recognition instance
-  const initRecognition = useCallback(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      setAssistantState('unsupported');
-      return null;
+  // Stop listening trigger
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.onstart = null;
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.stop();
+      } catch (e) {
+        // safe ignore
+      }
+      recognitionRef.current = null;
     }
+    setAssistantState('idle');
+  }, []);
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = langConfig.bcp47;
-    recognition.maxAlternatives = 3;
+  // Start listening trigger with clean instance lifecycle
+  const startListening = useCallback(() => {
+    stopSpeaking();
 
-    recognition.onstart = () => {
-      setAssistantState('listening');
-      setTranscript("");
-      setFeedbackMessage("");
-    };
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let interim = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        const item = event.results[i];
-        if (item.isFinal) {
-          const finalVal = item[0].transcript;
-          setTranscript(finalVal);
-          processCommandText(finalVal);
-        } else {
-          interim += item[0].transcript;
-          setTranscript(interim);
-        }
-      }
-    };
-
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.warn("Voice assistant recognition error:", event.error);
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        setAssistantState('mic_denied');
-        setFeedbackMessage(uiText.micDenied);
-      } else if (event.error === 'no-speech') {
-        setAssistantState('idle');
-      } else {
-        setAssistantState('error');
-        setFeedbackMessage(uiText.notUnderstood);
-      }
-    };
-
-    recognition.onend = () => {
-      if (assistantState === 'listening') {
-        setAssistantState('idle');
-      }
-    };
-
-    return recognition;
-  }, [assistantState, langConfig.bcp47, processCommandText, uiText.micDenied, uiText.notUnderstood]);
-
-  // Keep recognition updated with active language
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setAssistantState('unsupported');
       return;
     }
 
-    const rec = initRecognition();
-    recognitionRef.current = rec;
-
-    return () => {
+    // Clean up any existing recognition instance
+    if (recognitionRef.current) {
       try {
-        rec?.stop?.();
+        recognitionRef.current.onstart = null;
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.abort();
       } catch (e) {
-        // cleanup safe
+        // safe ignore
+      }
+      recognitionRef.current = null;
+    }
+
+    latestTranscriptRef.current = "";
+    isProcessingRef.current = false;
+
+    const launchEngine = () => {
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = langConfig.bcp47;
+        recognition.maxAlternatives = 3;
+
+        recognition.onstart = () => {
+          setAssistantState('listening');
+          setTranscript("");
+          setFeedbackMessage("");
+          latestTranscriptRef.current = "";
+          isProcessingRef.current = false;
+        };
+
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+          let accumulatedFinal = '';
+          let accumulatedInterim = '';
+
+          for (let i = 0; i < event.results.length; ++i) {
+            const item = event.results[i];
+            const text = item[0]?.transcript || '';
+            if (item.isFinal) {
+              accumulatedFinal += (accumulatedFinal ? ' ' : '') + text.trim();
+            } else {
+              accumulatedInterim += (accumulatedInterim ? ' ' : '') + text.trim();
+            }
+          }
+
+          const currentSpeech = accumulatedFinal || accumulatedInterim;
+          if (currentSpeech) {
+            latestTranscriptRef.current = currentSpeech;
+            setTranscript(currentSpeech);
+          }
+
+          // If final speech was produced, test if it matches a valid destination immediately
+          if (accumulatedFinal && !isProcessingRef.current) {
+            const match = matchVoiceCommand(accumulatedFinal, activeVoiceLang);
+            if (match) {
+              isProcessingRef.current = true;
+              try {
+                recognition.stop();
+              } catch (e) {
+                // safe ignore
+              }
+              processCommandText(accumulatedFinal);
+            }
+          }
+        };
+
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+          console.warn("[VoiceAssistant] Recognition error:", event.error);
+          if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            setAssistantState('mic_denied');
+            setFeedbackMessage(uiText.micDenied);
+          } else if (event.error === 'no-speech') {
+            if (!latestTranscriptRef.current) {
+              setAssistantState('idle');
+            }
+          } else if (event.error !== 'aborted') {
+            setAssistantState('error');
+            setFeedbackMessage(uiText.notUnderstood);
+          }
+        };
+
+        recognition.onend = () => {
+          // If silence cutoff occurred with captured transcript that was not yet processed
+          if (!isProcessingRef.current && latestTranscriptRef.current.trim()) {
+            isProcessingRef.current = true;
+            processCommandText(latestTranscriptRef.current.trim());
+          } else if (assistantStateRef.current === 'listening') {
+            setAssistantState('idle');
+          }
+        };
+
+        recognitionRef.current = recognition;
+        recognition.start();
+      } catch (err: any) {
+        console.warn("[VoiceAssistant] Start error:", err);
+        setAssistantState('error');
       }
     };
-  }, [initRecognition]);
 
-  // Start listening trigger
-  const startListening = useCallback(() => {
-    stopSpeaking();
-    if (assistantState === 'unsupported') return;
-
-    if (!recognitionRef.current) {
-      recognitionRef.current = initRecognition();
+    // Request microphone access explicitly if supported to prevent silent permission blocks
+    if (navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          // Release test stream immediately so recognition has full exclusive mic access
+          stream.getTracks().forEach(track => track.stop());
+          launchEngine();
+        })
+        .catch((err) => {
+          console.warn("[VoiceAssistant] Mic permission query:", err);
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            setAssistantState('mic_denied');
+            setFeedbackMessage(uiText.micDenied);
+          } else {
+            launchEngine();
+          }
+        });
+    } else {
+      launchEngine();
     }
+  }, [langConfig.bcp47, processCommandText, stopSpeaking, uiText.micDenied, uiText.notUnderstood]);
 
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.lang = langConfig.bcp47;
-        recognitionRef.current.start();
-        setAssistantState('listening');
-      } catch (err: any) {
-        // If already started, restart
+  // Clean up on component unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
         try {
-          recognitionRef.current.stop();
-          setTimeout(() => recognitionRef.current?.start(), 150);
+          recognitionRef.current.abort();
         } catch (e) {
-          console.warn("Could not start recognition:", e);
+          // safe ignore
         }
       }
-    }
-  }, [assistantState, initRecognition, langConfig.bcp47, stopSpeaking]);
-
-  // Stop listening trigger
-  const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.stop();
-      } catch (e) {
-        // safe
-      }
-    }
-    setAssistantState('idle');
-  }, []);
+      stopSpeaking();
+    };
+  }, [stopSpeaking]);
 
   // Listen for global navbar voice assistant open events
   useEffect(() => {
@@ -297,7 +371,11 @@ const VoiceAssistant: React.FC = () => {
 
     // Reconfigure recognition language
     if (recognitionRef.current) {
-      recognitionRef.current.lang = SUPPORTED_VOICE_LANGUAGES[code].bcp47;
+      try {
+        recognitionRef.current.lang = SUPPORTED_VOICE_LANGUAGES[code].bcp47;
+      } catch (e) {
+        // safe ignore
+      }
     }
   };
 
@@ -310,6 +388,15 @@ const VoiceAssistant: React.FC = () => {
       setTranscript("");
       setFeedbackMessage("");
       setAssistantState('idle');
+      setManualInput("");
+    }
+  };
+
+  const handleManualSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (manualInput.trim()) {
+      processCommandText(manualInput.trim());
+      setManualInput("");
     }
   };
 
@@ -469,6 +556,9 @@ const VoiceAssistant: React.FC = () => {
             {transcript && assistantState !== 'success' && (
               <div className="flex justify-end">
                 <div className="bg-emerald-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none max-w-[85%] shadow-md">
+                  <p className="text-[10px] text-emerald-100 uppercase tracking-wider font-bold mb-0.5">
+                    I heard:
+                  </p>
                   <p className="text-xs font-semibold leading-relaxed">
                     &ldquo;{transcript}&rdquo;
                   </p>
@@ -520,6 +610,25 @@ const VoiceAssistant: React.FC = () => {
                 ))}
               </div>
             </div>
+
+            {/* Fallback Command Input Bar */}
+            <form onSubmit={handleManualSubmit} className="flex items-center gap-2 pt-2">
+              <input
+                type="text"
+                value={manualInput}
+                onChange={(e) => setManualInput(e.target.value)}
+                placeholder={uiText.instruction || "Type or speak command..."}
+                className="flex-1 px-3.5 py-2 text-xs bg-white border border-slate-200 rounded-xl shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-800"
+              />
+              <Button
+                type="submit"
+                size="sm"
+                className="h-8 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1"
+              >
+                <span>Send</span>
+                <Send className="w-3 h-3" />
+              </Button>
+            </form>
 
             {/* Expanded Help Sheet */}
             {showHelpGuide && (

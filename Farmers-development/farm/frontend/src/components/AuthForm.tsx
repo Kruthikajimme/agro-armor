@@ -9,6 +9,7 @@ import signupBg from '@/assets/auth-bg-sunset.png';
 import { Eye, EyeOff, Phone, Mail, User, Lock, ArrowRight, Leaf, ShieldAlert } from 'lucide-react';
 import { trackEvent, identifyUser } from '@/lib/mixpanel';
 import { trackAmplitudeEvent, identifyAmplitudeUser } from '@/lib/amplitude';
+import { trackSignUp, trackLogin } from '@/lib/analytics';
 
 interface AuthFormProps {
   onAuthSuccess: (user: any) => void;
@@ -58,6 +59,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
         'phone': phone,
       });
 
+      // Track GA4 Signup (Strictly without PII)
+      trackSignUp('credentials');
+
       onAuthSuccess(response.user);
     } catch (err: any) {
       setError(err.message);
@@ -95,6 +99,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       identifyAmplitudeUser(phone, {
         'email': email,
       });
+
+      // Track GA4 Login (Strictly without PII)
+      trackLogin('credentials');
 
       onAuthSuccess(response.user);
     } catch (err: any) {

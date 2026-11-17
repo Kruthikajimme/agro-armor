@@ -51,7 +51,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମାର୍କେଟପ୍ଲେସ',
     },
     confirmations: {
-      en: 'Opening Marketplace...',
+      en: 'Navigating to Marketplace...',
       kn: 'ಮಾರ್ಕೆಟ್ಪ್ಲೇಸ್ ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'मार्केटप्लेस खोला जा रहा है...',
       te: 'మార్కెట్ప్లేస్ తెరవబడుతోంది...',
@@ -64,7 +64,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମାର୍କେଟପ୍ଲେସ ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['marketplace', 'open marketplace', 'take me to marketplace', 'go to marketplace', 'market', 'bazaar', 'shop', 'store', 'buy vaccine', 'buy feed', 'supplies', 'products', 'go to market'],
+      en: ['marketplace', 'open marketplace', 'take me to marketplace', 'go to marketplace', 'show me the marketplace', 'show me marketplace', 'show marketplace', 'navigate to marketplace', 'market', 'bazaar', 'shop', 'store', 'buy vaccine', 'buy feed', 'supplies', 'products', 'go to market'],
       kn: ['ಮಾರ್ಕೆಟ್ಪ್ಲೇಸ್', 'ಮಾರ್ಕೆಟ್', 'ಮಾರುಕಟ್ಟೆ', 'ಅಂಗಡಿ', 'ಖರೀದಿ', 'ಮಾರ್ಕೆಟ್ಪ್ಲೇಸ್ ತೆರೆಯಿರಿ', 'ಮಾರುಕಟ್ಟೆಗೆ ಹೋಗಿ', 'ಮಾರ್ಕೆಟ್ ತೆರೆಯಿರಿ', 'ಔಷಧಿ ಖರೀದಿ', 'marketplace kholo', 'market ge hogi', 'marketplace ge hogi'],
       hi: ['मार्केटप्लेस', 'बाजार', 'दुकान', 'मार्केट', 'सामान', 'मार्केटप्लेस खोलो', 'बाजार जाओ', 'दवा खरीदो', 'दुकान खोलो', 'मार्केट जाओ', 'marketplace kholo', 'bazar jao'],
       te: ['మార్కెట్ప్లేస్', 'మార్కెట్', 'దుకాణం', 'షాప్', 'మార్కెట్ప్లేస్ తెరవండి', 'మార్కెట్ కు వెళ్లు', 'సరుకులు', 'marketplace ki vellu', 'market open chey'],
@@ -94,7 +94,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ପଶୁ ଡାକ୍ତର',
     },
     confirmations: {
-      en: 'Opening Veterinary services...',
+      en: 'Navigating to Veterinary...',
       kn: 'ಪಶು ವೈದ್ಯಕೀಯ ಸೇವೆಗಳನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'पशु चिकित्सा सेवा खोली जा रही है...',
       te: 'పశు వైద్య సేవలు తెరవబడుతున్నాయి...',
@@ -107,7 +107,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ପଶୁ ଚିକିତ୍ସା ସେବା ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['veterinary', 'vet', 'open veterinary', 'go to veterinary', 'doctor', 'open doctor page', 'doctors', 'clinic', 'hospital', 'medical', 'consult doctor', 'vet clinic', 'find doctor', 'vet doctor', 'animal doctor', 'go to health', 'open health', 'animal health', 'health', 'livestock health', 'health page'],
+      en: ['veterinary', 'vet', 'open veterinary', 'go to veterinary', 'navigate to veterinary', 'take me to veterinary', 'show me veterinary', 'show veterinary', 'doctor', 'open doctor page', 'doctors', 'clinic', 'hospital', 'medical', 'consult doctor', 'vet clinic', 'find doctor', 'vet doctor', 'animal doctor', 'go to health', 'open health', 'animal health', 'health', 'livestock health', 'health page', 'vet doctors', 'veterinary doctors'],
       kn: ['ಪಶು ವೈದ್ಯರು', 'ವೈದ್ಯರು', 'ಡಾಕ್ಟರ್', 'ವೆಟರ್ನರಿ', 'ಆಸ್ಪತ್ರೆ', 'ಕ್ಲಿನಿಕ್', 'ವೈದ್ಯರ ಪುಟ', 'ಡಾಕ್ಟರ್ ಪುಟ ತೆರೆಯಿರಿ', 'ವೈದ್ಯರ ಬಳಿ ಹೋಗಿ', 'ಆರೋಗ್ಯ ಪುಟ', 'doctor ge hogi', 'vet doctor nodi'],
       hi: ['पशु चिकित्सक', 'डॉक्टर', 'वेटनरी', 'अस्पताल', 'क्लिनिक', 'डॉक्टर पेज', 'डॉक्टर के पास जाओ', 'डॉक्टर पेज खोलो', 'इलाज', 'पशु अस्पताल', 'पशु स्वास्थ्य', 'स्वास्थ्य', 'doctor ke paas jao', 'vet kholo'],
       te: ['పశు వైద్యులు', 'డాక్టర్', 'వెటర్నరీ', 'వైద్యుడు', 'ఆసుపత్రి', 'క్లినిక్', 'డాక్టర్ పేజీ', 'డాక్టర్ పేజీ తెరవండి', 'వైద్యుని సంప్రదించండి', 'పశువుల ఆరోగ్యం', 'doctor daggara ki vellu'],
@@ -137,7 +137,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ରୋଗ ଚିହ୍ନଟ',
     },
     confirmations: {
-      en: 'Opening AI Disease Detection...',
+      en: 'Navigating to Disease Scan...',
       kn: 'AI ರೋಗ ಪತ್ತೆ ಪುಟವನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'AI रोग पहचान खोली जा रही है...',
       te: 'AI వ్యాధి గుర్తింపు తెరవబడుతోంది...',
@@ -150,7 +150,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'AI ରୋଗ ଚିହ୍ନଟ ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['check disease', 'disease detection', 'disease scan', 'ai detection', 'poultry disease', 'chicken disease', 'diagnose', 'sick chicken', 'disease check', 'scan disease', 'detect disease', 'upload photo disease'],
+      en: ['check disease', 'disease detection', 'disease scan', 'open disease scan', 'go to disease scan', 'take me to disease scan', 'show me disease scan', 'show disease scan', 'ai detection', 'poultry disease', 'chicken disease', 'diagnose', 'sick chicken', 'disease check', 'scan disease', 'detect disease', 'upload photo disease'],
       kn: ['ರೋಗ ಪತ್ತೆ', 'ರೋಗ ಪರೀಕ್ಷೆ', 'ರೋಗ ತಪಾಸಣೆ', 'ಕೋಳಿ ರೋಗ', 'ಕಾಯಿಲೆ ಪರೀಕ್ಷೆ', 'ರೋಗ ಪರೀಕ್ಷಿಸಿ', 'ಕೋಳಿ ಕಾಯಿಲೆ', 'ರೋಗ ಸ್ಕ್ಯಾನ್', 'disease check madi', 'roga nodi'],
       hi: ['रोग पहचान', 'रोग की जांच', 'बीमारी की जांच', 'रोग जांच', 'मुर्गी की बीमारी', 'बीमारी चेक करो', 'रोग का पता लगाओ', 'बीमारी जांचो', 'रोग स्कैन', 'bimari check karo', 'disease check karo'],
       te: ['వ్యాధి గుర్తింపు', 'వ్యాధి తనిఖీ', 'వ్యాధి పరీక్ష', 'కోళ్ల వ్యాధి', 'వ్యాధి చెక్ చేయండి', 'రోగం కనిపెట్టు', 'వ్యవసాయ రోగం'],
@@ -180,7 +180,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ଜିପିଏସ ଟ୍ରାକିଂ',
     },
     confirmations: {
-      en: 'Opening GPS & Animal Tracking...',
+      en: 'Navigating to GPS Tracking...',
       kn: 'ಜಿಪಿಎಸ್ ಮತ್ತು ಜಾನುವಾರು ಟ್ರ್ಯಾಕಿಂಗ್ ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'जीपीएस और पशु ट्रैकिंग खोली जा रही है...',
       te: 'జీపీఎస్ మరియు పశువుల ట్రాకింగ్ తెరవబడుతోంది...',
@@ -193,7 +193,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ଜିପିଏସ ଟ୍ରାକିଂ ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['track my animal', 'show my livestock', 'my livestock', 'livestock', 'show livestock', 'gps', 'gps tracking', 'tracking', 'track animal', 'livestock tracking', 'find animal', 'animal location', 'farm gps', 'map', 'track cattle', 'locate animal'],
+      en: ['track my animal', 'show my livestock', 'my livestock', 'livestock', 'show livestock', 'gps', 'gps tracking', 'go to gps tracking', 'open gps tracking', 'take me to gps tracking', 'show me gps tracking', 'navigate to gps tracking', 'show gps tracking', 'tracking', 'track animal', 'livestock tracking', 'find animal', 'animal location', 'farm gps', 'map', 'track cattle', 'locate animal', 'animal tracking'],
       kn: ['ಜಿಪಿಎಸ್', 'ಜಿಪಿಎಸ್ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಪ್ರಾಣಿ ಟ್ರ್ಯಾಕಿಂಗ್', 'ಜಾನುವಾರು ಟ್ರ್ಯಾಕಿಂಗ್', 'ಪ್ರಾಣಿ ಹುಡುಕಿ', 'ಸ್ಥಳ', 'ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'ಜಾನುವಾರು ಹುಡುಕಿ', 'ನನ್ನ ಜಾನುವಾರು', 'ಜಾನುವಾರು', 'ಜಾನುವಾರು ತೋರಿಸಿ'],
       hi: ['जीपीएस', 'जीपीएस ट्रैकिंग', 'पशु ट्रैकिंग', 'जानवर ट्रैक करो', 'पशु ढूंढो', 'लोकेशन', 'पशु का पता लगाओ', 'ट्रैकिंग', 'animal track karo', 'gps kholo', 'मेरे पशु', 'पशु दिखाओ', 'जानवर दिखाओ', 'मेरे जानवर'],
       te: ['జీపీఎస్', 'జీపీఎస్ ట్రాకింగ్', 'పశువుల ట్రాకింగ్', 'పశువును ట్రాక్ చేయండి', 'నా జంతువును ట్రాక్ చేయండి', 'స్థానం', 'ట్రాకింగ్'],
@@ -223,7 +223,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ପଶୁ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ସ୍ୱଚ୍ଛତା',
     },
     confirmations: {
-      en: 'Opening Animal Health & Hygiene Assessment...',
+      en: 'Navigating to Hygiene Test...',
       kn: 'ಪ್ರಾಣಿ ಆರೋಗ್ಯ ಮತ್ತು ನೈರ್ಮಲ್ಯ ಪರೀಕ್ಷೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'पशु स्वास्थ्य और स्वच्छता जांच खोली जा रही है...',
       te: 'పరిశుభ్రత మరియు ఆరోగ్య పరీక్ష తెరవబడుతోంది...',
@@ -236,7 +236,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ସ୍ୱଚ୍ଛତା ପରୀକ୍ଷା ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['hygiene', 'go to hygiene', 'open hygiene', 'hygiene test', 'health test', 'cleanliness', 'farm health', 'sanitation', 'health score', 'hygiene check', 'biosecurity', 'farm check'],
+      en: ['hygiene', 'go to hygiene', 'open hygiene', 'hygiene test', 'open hygiene test', 'go to hygiene test', 'health test', 'cleanliness', 'farm health', 'sanitation', 'health score', 'hygiene check', 'biosecurity', 'farm check'],
       kn: ['ಪ್ರಾಣಿ ಆರೋಗ್ಯ', 'ಆರೋಗ್ಯ', 'ನೈರ್ಮಲ್ಯ', 'ಸ್ವಚ್ಛತೆ', 'ನೈರ್ಮಲ್ಯ ಪರೀಕ್ಷೆ', 'ಆರೋಗ್ಯ ಪರೀಕ್ಷೆ', 'ಸ್ವಚ್ಛತೆ ಪರೀಕ್ಷೆ', 'ಫಾರ್ಮ್ ಸ್ವಚ್ಛತೆ', 'hygiene test madi'],
       hi: ['पशु स्वास्थ्य', 'स्वास्थ्य', 'स्वच्छता', 'सफाई', 'हाइजीन टेस्ट', 'सफाई जांच', 'स्वास्थ्य परीक्षण', 'स्वच्छता परीक्षण', 'health test karo', 'safai test karo'],
       te: ['పశువుల ఆరోగ్యం', 'ఆరోగ్యం', 'పరిశుభ్రత', 'పరిశుభ్రత పరీక్ష', 'ఆరోగ్య పరీక్ష', 'ఫారం పరిశుభ్రత'],
@@ -266,7 +266,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'କାମ ଏବଂ କାର୍ଯ୍ୟ',
     },
     confirmations: {
-      en: 'Opening your Tasks and Todo list...',
+      en: 'Navigating to Tasks...',
       kn: 'ನಿಮ್ಮ ಕೆಲಸಗಳ ಪಟ್ಟಿಯನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
       hi: 'आपके कार्यों की सूची खोली जा रही है...',
       te: 'మీ పనుల జాబితా తెరవబడుతోంది...',
@@ -279,7 +279,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ଆପଣଙ୍କ କାର୍ଯ୍ୟ ତାଲିକା ଖୋଲାଯାଉଛି...',
     },
     aliases: {
-      en: ['open my tasks', 'tasks', 'my tasks', 'todo', 'todo list', 'work list', 'pending tasks', 'daily tasks', 'farm tasks', 'what to do', 'reminder'],
+      en: ['open my tasks', 'tasks', 'my tasks', 'show my tasks', 'show tasks', 'go to tasks', 'open tasks', 'take me to tasks', 'show me my tasks', 'todo', 'todo list', 'work list', 'pending tasks', 'daily tasks', 'farm tasks', 'what to do', 'reminder', 'tasks list', 'view tasks'],
       kn: ['ಕೆಲಸಗಳು', 'ನನ್ನ ಕೆಲಸಗಳು', 'ನನ್ನ ಕಾರ್ಯಗಳು', 'ಕಾರ್ಯಗಳು', 'ಟಾಸ್ಕ್', 'ಕೆಲಸದ ಪಟ್ಟಿ', 'ಕೆಲಸಗಳನ್ನು ತೋರಿಸಿ', 'ದೈನಂದಿನ ಕೆಲಸ', 'ಬಾಕಿ ಕೆಲಸ', 'tasks thovisi'],
       hi: ['कार्य', 'काम', 'टास्क', 'मेरे काम', 'काम की सूची', 'कार्य सूची', 'दैनिक कार्य', 'टास्क खोलो', 'काम दिखाओ', 'कामकाज', 'kaam dikhao', 'tasks kholo'],
       te: ['పనులు', 'టాస్క్‌లు', 'నా పనులు', 'పనుల జాబితా', 'పనులు చూపించండి', 'రోజువారీ పనులు', 'panulu chupinchandi'],
@@ -524,7 +524,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମୂଳ ପୃଷ୍ଠା',
     },
     confirmations: {
-      en: 'Going to Home page...',
+      en: 'Navigating to Home...',
       kn: 'ಮುಖಪುಟಕ್ಕೆ ಹೋಗಲಾಗುತ್ತಿದೆ...',
       hi: 'मुख्य पृष्ठ पर जा रहे हैं...',
       te: 'హోమ్ పేజీకి వెళ్తున్నాం...',
@@ -537,7 +537,7 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: 'ମୂଳ ପୃଷ୍ଠାକୁ ଯାଉଛି...',
     },
     aliases: {
-      en: ['go home', 'home', 'homepage', 'dashboard', 'open dashboard', 'main page', 'start', 'front page', 'main dashboard'],
+      en: ['go home', 'home', 'go to home', 'open home', 'take me home', 'take me to home', 'show me home', 'show home', 'homepage', 'dashboard', 'open dashboard', 'main page', 'start', 'front page', 'main dashboard'],
       kn: ['ಮುಖಪುಟ', 'ಹೋಮ್', 'ಮನೆ', 'ಮನೆಗೆ ಹೋಗಿ', 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್', 'ಆರಂಭ', 'ಹೋಮ್ ಪುಟ', 'ಹೋಮ್ ಗೆ ಹೋಗಿ', 'home ge hogi'],
       hi: ['होम', 'घर', 'मुख्य पृष्ठ', 'डैशबोर्ड', 'होम पेज', 'होम पर जाओ', 'शुरू', 'होम जाओ', 'home jao'],
       te: ['హోమ్', 'ప్రధాన పేజీ', 'డాష్‌బోర్డ్', 'హోమ్ పేజీకి వెళ్లు', 'మొదటి పేజీ', 'home ki vellu'],
@@ -636,6 +636,49 @@ export const ROUTE_COMMANDS: RouteCommand[] = [
       or: ['ସାହାଯ୍ୟ', 'କଣ କହିବି', 'ନିର୍ଦ୍ଦେଶ'],
     },
   },
+  {
+    id: 'find_vet',
+    route: '/find-vet',
+    labels: {
+      en: 'Find Nearby Vet',
+      kn: 'ಹತ್ತಿರದ ಪಶು ವೈದ್ಯರು',
+      hi: 'नजदीकी पशु चिकित्सक',
+      te: 'సమీప పశు వైద్యులు',
+      ta: 'அருகிலுள்ள கால்நடை மருத்துவர்',
+      ml: 'സമീപത്തുള്ള മൃഗഡോക്ടർ',
+      mr: 'जवळपासचे पशुवैद्य',
+      bn: 'কাছের পশু চিকিৎসক',
+      gu: 'નજીકના પશુ ચિકિત્સક',
+      pa: 'ਨੇੜਲਾ ਪਸ਼ੂ ਡਾਕਟਰ',
+      or: 'ନିକଟସ୍ଥ ପଶୁ ଡାକ୍ତର',
+    },
+    confirmations: {
+      en: 'Navigating to Nearby Veterinarians...',
+      kn: 'ಹತ್ತಿರದ ಪಶು ವೈದ್ಯರ ನಕ್ಷೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ...',
+      hi: 'नजदीकी पशु चिकित्सक मानचित्र खोला जा रहा है...',
+      te: 'సమీప పశు వైద్యుల మ్యాప్ తెరవబడుతోంది...',
+      ta: 'அருகிலுள்ள கால்நடை மருத்துவர் வரைபடம் திறக்கப்படுகிறது...',
+      ml: 'സമീപത്തുള്ള മൃഗാശുപത്രി മാപ്പ് തുറക്കുന്നു...',
+      mr: 'जवळपासच्या डॉक्टरांचा नकाशा उघडत आहे...',
+      bn: 'কাছের পশু চিকিৎসকের মানচিত্র খোলা হচ্ছে...',
+      gu: 'નજીકના પશુ ચિકિત્સકનો નકશો ખુલી રહ્યો છે...',
+      pa: 'ਨੇੜਲੇ ਪਸ਼ੂ ਹਸਪਤਾਲ ਦਾ ਨਕਸ਼ਾ ਖੋਲ੍ਹਿਆ ਜਾ ਰਹੀ ਹੈ...',
+      or: 'ନିକଟସ୍ଥ ପଶୁ ଡାକ୍ତର ମାନଚିତ୍ର ଖୋଲାଯାଉଛି...',
+    },
+    aliases: {
+      en: ['find nearby vet', 'nearby vet', 'vet on map', 'locate vet', 'find doctor near me', 'nearby clinic', 'vet map'],
+      kn: ['ಹತ್ತಿರದ ವೈದ್ಯರು', 'ಹತ್ತಿರದ ಕ್ಲಿನಿಕ್', 'ಪಶು ವೈದ್ಯರನ್ನು ಹುಡುಕಿ', 'ನಕ್ಷೆಯಲ್ಲಿ ವೈದ್ಯರು'],
+      hi: ['नजदीकी डॉक्टर', 'डॉक्टर खोजो', 'पास का अस्पताल', 'नजदीकी पशु चिकित्सक', 'नक्शे पर डॉक्टर'],
+      te: ['సమీప డాక్టర్', 'డాక్టర్ ను వెతకండి'],
+      ta: ['அருகிலுள்ள மருத்துவர்'],
+      ml: ['സമീപത്തുള്ള ഡോക്ടർ'],
+      mr: ['जवळपासचे डॉक्टर'],
+      bn: ['কাছের ডাক্তার'],
+      gu: ['નજીકના ડોક્ટર'],
+      pa: ['ਨੇੜਲਾ ਡਾਕਟਰ'],
+      or: ['ନିକଟସ୍ଥ ଡାକ୍ତର'],
+    },
+  },
 ];
 
 // UI Prompts & Notification text per language
@@ -656,10 +699,10 @@ export const VOICE_UI_TEXT: Record<SupportedLanguage, {
   en: {
     tapToSpeak: 'Tap to Speak',
     tapToStop: 'Stop Listening',
-    listening: 'Listening... Speak now',
+    listening: 'Listening...',
     processing: 'Finding destination...',
     instruction: 'Tap the microphone and tell me where you want to go.',
-    notUnderstood: "I couldn't understand that. Please try saying a page name, or tap a sample below.",
+    notUnderstood: "Sorry, I didn't understand. Please try again. Try saying a page name or tap a sample command below.",
     micDenied: 'Microphone access is blocked. Please allow microphone permissions in browser settings.',
     unsupported: 'Speech recognition is not supported in this browser. Please use Chrome or Edge.',
     assistantTitle: 'AgroArmor Voice Assistant',
@@ -929,6 +972,62 @@ const COMMON_STOP_WORDS = new Set([
   'as', 'by', 'that', 'this', 'it', 'from', 'be', 'are', 'was', 'were', 'hai', 'ka', 'ki', 'ke', 'ko', 'me'
 ]);
 
+const INTENT_PREFIXES = [
+  // Polite natural speech wrappers & questions
+  /^could you please (open the|open|navigate to the|navigate to|show me the|show me my|show me|show my|show the|show|take me to the|take me to|take me|go to the|go to|go)\s+/i,
+  /^can you please (open the|open|navigate to the|navigate to|show me the|show me my|show me|show my|show the|show|take me to the|take me to|take me|go to the|go to|go)\s+/i,
+  /^would you please (open the|open|navigate to the|navigate to|show me the|show me my|show me|show my|show the|show|take me to the|take me to|take me|go to the|go to|go)\s+/i,
+  /^please (navigate to the|navigate to|take me to the|take me to|take me|open the|open|show me the|show me my|show me|show my|show the|show|go to the|go to|go)\s+/i,
+  /^(navigate to the|navigate to)\s+/i,
+  /^(take me to the|take me to|take me)\s+/i,
+  /^(show me the|show me my|show me|show my|show the|show)\s+/i,
+  /^(open the|open)\s+/i,
+  /^(go to the|go to|go)\s+/i,
+  /^(head to the|head to)\s+/i,
+  /^(switch to the|switch to)\s+/i,
+  /^(bring up the|bring up)\s+/i,
+  /^(launch the|launch)\s+/i,
+  /^(view the|view|visit the|visit|display the|display)\s+/i,
+  /^(i want to see the|i want to see|i want to go to the|i want to go to)\s+/i,
+
+  // Hindi polite & command prefixes
+  /^कृपया\s+/i,
+  /^मुझे\s+/i,
+  /^हमको\s+/i,
+
+  // Kannada polite & command prefixes
+  /^ದಯವಿಟ್ಟು\s+/i,
+  /^ನನಗೆ\s+/i,
+];
+
+const INTENT_SUFFIXES = [
+  // English common suffixes
+  /\s+(page|screen|section|services|service|please|now)$/i,
+
+  // Hindi common suffixes
+  /\s+(खोलो|खोलें|दिखाओ|दिखाइए|पर जाओ|पे जाओ|जाओ|ले चलो|पेज|स्क्रीन)$/i,
+
+  // Kannada common suffixes
+  /\s+(ತೆರೆಯಿರಿ|ತೋರಿಸಿ|ತೋರಿಸು|ಗೆ ಹೋಗಿ|ಹೋಗಿ|ಹೋಗು|ಪುಟ|ಸ್ಕ್ರೀನ್)$/i,
+];
+
+export function stripIntentAffixes(normalizedInput: string): string {
+  let cleaned = normalizedInput.trim();
+  for (const prefix of INTENT_PREFIXES) {
+    if (prefix.test(cleaned)) {
+      cleaned = cleaned.replace(prefix, '').trim();
+      break;
+    }
+  }
+  for (const suffix of INTENT_SUFFIXES) {
+    if (suffix.test(cleaned)) {
+      cleaned = cleaned.replace(suffix, '').trim();
+      break;
+    }
+  }
+  return cleaned;
+}
+
 function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -954,6 +1053,63 @@ function matchesAlias(normalizedInput: string, normalizedAlias: string): boolean
   return false;
 }
 
+interface ScoredMatch {
+  match: MatchResult;
+  score: number;
+}
+
+function findBestMatchInLanguage(
+  commands: RouteCommand[],
+  lang: SupportedLanguage,
+  candidates: string[],
+  displayLang: SupportedLanguage
+): MatchResult | null {
+  let best: ScoredMatch | null = null;
+
+  for (const cmd of commands) {
+    const langAliases = cmd.aliases[lang] || [];
+    for (const alias of langAliases) {
+      const normAlias = normalizeVoiceInput(alias);
+      if (!normAlias || COMMON_STOP_WORDS.has(normAlias)) continue;
+
+      for (const candidate of candidates) {
+        if (!candidate || COMMON_STOP_WORDS.has(candidate)) continue;
+
+        let score = 0;
+        if (candidate === normAlias) {
+          score = 1000 + normAlias.length;
+        } else {
+          const escaped = escapeRegExp(normAlias);
+          const regex = new RegExp(`(^|\\s)${escaped}(\\s|$)`, 'i');
+          if (regex.test(candidate)) {
+            score = 500 + normAlias.length;
+          } else {
+            const aliasWords = normAlias.split(' ').filter(w => w.length > 2 && !COMMON_STOP_WORDS.has(w));
+            if (aliasWords.length > 1 && aliasWords.every(w => candidate.includes(w))) {
+              score = 100 + normAlias.length;
+            }
+          }
+        }
+
+        if (score > 0 && (!best || score > best.score)) {
+          best = {
+            score,
+            match: {
+              route: cmd.route,
+              commandId: cmd.id,
+              label: cmd.labels[displayLang] || cmd.labels.en,
+              confirmation: cmd.confirmations[displayLang] || cmd.confirmations.en,
+              matchedAlias: alias,
+            }
+          };
+        }
+      }
+    }
+  }
+
+  return best ? best.match : null;
+}
+
 export function matchVoiceCommand(
   rawTranscript: string,
   currentLanguage: SupportedLanguage = 'en'
@@ -962,58 +1118,32 @@ export function matchVoiceCommand(
   if (!normalized) return null;
   if (COMMON_STOP_WORDS.has(normalized)) return null;
 
-  // 1. Check in the current language first
-  for (const cmd of ROUTE_COMMANDS) {
-    const langAliases = cmd.aliases[currentLanguage] || [];
-    for (const alias of langAliases) {
-      const normAlias = normalizeVoiceInput(alias);
-      if (matchesAlias(normalized, normAlias)) {
-        return {
-          route: cmd.route,
-          commandId: cmd.id,
-          label: cmd.labels[currentLanguage] || cmd.labels.en,
-          confirmation: cmd.confirmations[currentLanguage] || cmd.confirmations.en,
-          matchedAlias: alias,
-        };
-      }
-    }
+  const stripped = stripIntentAffixes(normalized);
+  const candidates = [normalized];
+  if (stripped && stripped !== normalized) {
+    candidates.push(stripped);
+  }
+
+  // 1. Check in the current language first with specificity scoring
+  const currentLangMatch = findBestMatchInLanguage(ROUTE_COMMANDS, currentLanguage, candidates, currentLanguage);
+  if (currentLangMatch) {
+    return currentLangMatch;
   }
 
   // 2. Fall back to English aliases (farmers frequently use English technical words e.g. "marketplace kholo")
   if (currentLanguage !== 'en') {
-    for (const cmd of ROUTE_COMMANDS) {
-      const enAliases = cmd.aliases.en || [];
-      for (const alias of enAliases) {
-        const normAlias = normalizeVoiceInput(alias);
-        if (matchesAlias(normalized, normAlias)) {
-          return {
-            route: cmd.route,
-            commandId: cmd.id,
-            label: cmd.labels[currentLanguage] || cmd.labels.en,
-            confirmation: cmd.confirmations[currentLanguage] || cmd.confirmations.en,
-            matchedAlias: alias,
-          };
-        }
-      }
+    const enMatch = findBestMatchInLanguage(ROUTE_COMMANDS, 'en', candidates, currentLanguage);
+    if (enMatch) {
+      return enMatch;
     }
   }
 
   // 3. Fall back across all other languages
-  for (const cmd of ROUTE_COMMANDS) {
-    for (const [lang, aliases] of Object.entries(cmd.aliases)) {
-      if (lang === currentLanguage || lang === 'en') continue;
-      for (const alias of aliases) {
-        const normAlias = normalizeVoiceInput(alias);
-        if (matchesAlias(normalized, normAlias)) {
-          return {
-            route: cmd.route,
-            commandId: cmd.id,
-            label: cmd.labels[currentLanguage] || cmd.labels.en,
-            confirmation: cmd.confirmations[currentLanguage] || cmd.confirmations.en,
-            matchedAlias: alias,
-          };
-        }
-      }
+  for (const lang of Object.keys(SUPPORTED_VOICE_LANGUAGES) as SupportedLanguage[]) {
+    if (lang === currentLanguage || lang === 'en') continue;
+    const crossLangMatch = findBestMatchInLanguage(ROUTE_COMMANDS, lang, candidates, currentLanguage);
+    if (crossLangMatch) {
+      return crossLangMatch;
     }
   }
 
